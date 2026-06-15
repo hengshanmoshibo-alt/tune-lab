@@ -27,7 +27,7 @@ tune-lab/
   scripts/
     run_wsl_setup.sh
     train_smoke.sh
-    train_resume_grade.sh
+    train_quick.sh
     train_full.sh
     evaluate.sh
     serve_ui.sh
@@ -59,12 +59,6 @@ bash scripts/install_wsl_system_deps.sh
 
 ```bash
 bash scripts/train_smoke.sh
-```
-
-简历级快速训练，约使用 2000 条公开训练样本：
-
-```bash
-bash scripts/train_resume_grade.sh
 ```
 
 全量训练：
