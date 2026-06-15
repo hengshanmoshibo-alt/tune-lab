@@ -115,12 +115,6 @@ http://localhost:7861/
 
 ![中文情感 LoRA 前端对比](docs/assets/sentiment-lora-ui-comparison.png)
 
-## 简历表达
-
-可以写成：
-
-> 基于 Qwen2.5-0.5B-Instruct 和公开 ChnSentiCorp 数据集构建中文情感分类 LoRA 微调系统，完成公开数据转换、QLoRA 训练、Base/LoRA 自动化评测与错误样例分析；在 1179 条公开测试集上将 Accuracy 从 68.96% 提升到 92.20%，Macro F1 从 66.57% 提升到 92.20%。
-
 ## 数据说明
 
 训练、验证、测试数据均从公开 ChnSentiCorp 数据集转换而来。项目不使用自建客服规则数据，也不混入人工构造答案。
@@ -128,29 +122,3 @@ http://localhost:7861/
 ## License
 
 本项目代码使用 MIT License。数据集和基础模型请遵守各自原始许可证与使用条款。
-
-## GitHub 发布建议
-
-建议提交到 GitHub 的内容：
-
-- `src/`：数据准备、训练、评测、推理服务代码。
-- `frontend/`：Base / LoRA 对比测试页面。
-- `scripts/`：环境、训练、评测、前端启动脚本。
-- `configs/`：训练参数参考配置。
-- `outputs/chnsenticorp_eval/eval_report.md`：最终评测报告。
-- `README.md`、`pyproject.toml`、`requirements-wsl.txt`。
-
-不建议直接提交：
-
-- `.venv-wsl/`：本地虚拟环境，体积很大。
-- `data/processed/**/*.jsonl`：由公开数据脚本生成，不需要重复分发。
-- `checkpoints/`：LoRA adapter 和训练 checkpoint 较大，建议用 Git LFS、GitHub Release 或 Hugging Face 单独发布。
-- `outputs/**/*.jsonl`：逐条预测结果较冗余，保留 Markdown 报告即可。
-
-如果要把 LoRA adapter 也放进 GitHub，推荐使用 Git LFS：
-
-```bash
-git lfs install
-git lfs track "*.safetensors"
-git add .gitattributes checkpoints/qwen2.5-0.5b-chnsenticorp-lora/adapter_model.safetensors
-```
