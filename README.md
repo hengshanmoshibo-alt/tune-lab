@@ -1,12 +1,12 @@
-# domain-tune-lab
+# tune-lab
 
-这是一个重新开发的 LoRA 微调实验项目，目标是做出可以量化证明提升的结果，而不是继续做开放式客服生成。
+`tune-lab` 是一个中文情感分类 LoRA 微调实验项目。项目目标不是做开放式聊天，而是用公开数据集做一个可以量化证明微调效果的端到端案例：数据转换、QLoRA 训练、Base/LoRA 自动评测、FastAPI 推理服务和前端对比页面。
 
-当前任务选择公开中文情感分类数据集 ChnSentiCorp：输入一条中文评论，模型只能输出 `正面` 或 `负面`。这个任务有标准答案，因此可以直接比较 Base 原模型和 LoRA 微调模型的准确率、宏 F1、格式合规率。
+当前任务使用公开中文情感分类数据集 ChnSentiCorp：输入一条中文评论，模型只输出 `正面` 或 `负面`。因为测试集有标准答案，所以可以直接比较 Base 原模型和 LoRA 微调模型的 Accuracy、Macro F1 和格式合规率。
 
-## 为什么换成情感分类
+## 为什么选择情感分类
 
-开放式客服回复很难证明“变好”，因为同一个问题可以有很多种合理回答。ChnSentiCorp 是二分类任务，评测标准清楚：
+开放式客服回复很难证明“微调后更好”，因为同一个问题可以有很多种合理回答。情感分类是标准监督任务，评测更清楚：
 
 - `Accuracy`：预测是否正确。
 - `Macro F1`：正负样本是否都学到。
@@ -16,56 +16,52 @@
 ## 项目结构
 
 ```text
-domain-tune-lab/
+tune-lab/
   configs/
     qwen2.5_0.5b_chnsenticorp_lora_smoke.yaml
     qwen2.5_0.5b_chnsenticorp_lora.yaml
-    llamafactory_dataset_info.json
+  frontend/
+    app.js
+    index.html
+    styles.css
   scripts/
     run_wsl_setup.sh
     train_smoke.sh
+    train_resume_grade.sh
     train_full.sh
     evaluate.sh
+    serve_ui.sh
   src/domain_tune_lab/
     prepare_chnsenticorp.py
-    sync_llamafactory_data.py
+    train_sentiment_lora.py
     evaluate_sentiment_models.py
+    serve_sentiment.py
 ```
 
-## 运行步骤
+> 说明：Python 包名仍保留为 `domain_tune_lab`，这是内部代码模块名；GitHub 仓库和项目展示名使用 `tune-lab`。
+
+## 快速开始
 
 在 WSL2 Ubuntu 中执行：
 
 ```bash
-cd /mnt/d/home/work/projects/PycharmProjects/domain-tune-lab
+cd /path/to/tune-lab
 bash scripts/run_wsl_setup.sh
 ```
 
-如果提示缺少 `python3-venv`，先执行：
+如果提示缺少 `python3-venv`：
 
 ```bash
 bash scripts/install_wsl_system_deps.sh
 ```
 
-如果 `/mnt/d/home/work/tools/LLaMA-Factory` 还没有安装：
+训练 smoke test：
 
 ```bash
-mkdir -p /mnt/d/home/work/tools
-cd /mnt/d/home/work/tools
-git clone https://github.com/hiyouga/LLaMA-Factory.git
-cd LLaMA-Factory
-source /mnt/d/home/work/projects/PycharmProjects/domain-tune-lab/.venv-wsl/bin/activate
-pip install -e ".[torch,metrics]"
-```
-
-先跑 smoke test：
-
-```bash
-cd /mnt/d/home/work/projects/PycharmProjects/domain-tune-lab
 bash scripts/train_smoke.sh
 ```
 
-简历级快速实验训练，约使用 2000 条公开训练样本：
+简历级快速训练，约使用 2000 条公开训练样本：
 
 ```bash
 bash scripts/train_resume_grade.sh
@@ -83,15 +79,6 @@ bash scripts/train_full.sh
 bash scripts/evaluate.sh
 ```
 
-评测输出：
-
-```text
-outputs/chnsenticorp_eval/eval_base.jsonl
-outputs/chnsenticorp_eval/eval_lora.jsonl
-outputs/chnsenticorp_eval/metrics.json
-outputs/chnsenticorp_eval/eval_report.md
-```
-
 启动前端测试台：
 
 ```bash
@@ -106,7 +93,7 @@ http://localhost:7861/
 
 ## 当前实验结果
 
-已完成一次简历级快速实验：
+已完成一次可展示的 LoRA 微调实验：
 
 - 训练数据：公开 ChnSentiCorp train split 中 1928 条有效样本。
 - 验证数据：公开 ChnSentiCorp valid split 中 391 条有效样本。
@@ -136,7 +123,7 @@ http://localhost:7861/
 
 ## 数据说明
 
-训练、验证、测试数据均从公开 ChnSentiCorp 数据集转换而来。项目不再使用自建客服规则数据，也不混入人工构造答案。
+训练、验证、测试数据均从公开 ChnSentiCorp 数据集转换而来。项目不使用自建客服规则数据，也不混入人工构造答案。
 
 ## GitHub 发布建议
 
@@ -145,15 +132,15 @@ http://localhost:7861/
 - `src/`：数据准备、训练、评测、推理服务代码。
 - `frontend/`：Base / LoRA 对比测试页面。
 - `scripts/`：环境、训练、评测、前端启动脚本。
-- `configs/`：保留训练配置，方便说明实验参数。
-- `outputs/chnsenticorp_eval/eval_report.md`：保留最终评测报告。
+- `configs/`：训练参数参考配置。
+- `outputs/chnsenticorp_eval/eval_report.md`：最终评测报告。
 - `README.md`、`pyproject.toml`、`requirements-wsl.txt`。
 
 不建议直接提交：
 
 - `.venv-wsl/`：本地虚拟环境，体积很大。
 - `data/processed/**/*.jsonl`：由公开数据脚本生成，不需要重复分发。
-- `checkpoints/`：模型 adapter 和训练中间 checkpoint 较大，建议用 Git LFS、GitHub Release 或 Hugging Face 单独发布。
+- `checkpoints/`：LoRA adapter 和训练 checkpoint 较大，建议用 Git LFS、GitHub Release 或 Hugging Face 单独发布。
 - `outputs/**/*.jsonl`：逐条预测结果较冗余，保留 Markdown 报告即可。
 
 如果要把 LoRA adapter 也放进 GitHub，推荐使用 Git LFS：

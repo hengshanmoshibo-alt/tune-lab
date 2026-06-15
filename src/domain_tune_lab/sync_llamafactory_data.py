@@ -21,7 +21,7 @@ DATASET_INFO = {
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Copy prepared data and register it in LLaMA-Factory.")
-    parser.add_argument("--project-root", default=".", help="domain-tune-lab root.")
+    parser.add_argument("--project-root", default=".", help="tune-lab project root.")
     parser.add_argument("--llamafactory-dir", default="/mnt/d/home/work/tools/LLaMA-Factory")
     parser.add_argument("--dataset-name", default="chnsenticorp_sentiment")
     return parser.parse_args()
