@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>中文情感 LoRA 对比</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="panel">
+        <div class="head">
+          <div>
+            <h1>中文情感 LoRA 对比</h1>
+            <p>输入中文评论，比较 Base 原模型和 LoRA 微调模型。</p>
+          </div>
+          <div class="status" id="status">连接中</div>
+        </div>
+
+        <div class="metrics" aria-label="评测指标">
+          <div>
+            <span>Base Accuracy</span>
+            <strong id="baseAcc">--</strong>
+          </div>
+          <div>
+            <span>LoRA Accuracy</span>
+            <strong id="loraAcc">--</strong>
+          </div>
+          <div>
+            <span>Macro F1 提升</span>
+            <strong id="f1Gain">--</strong>
+          </div>
+        </div>
+
+        <label class="label" for="text">评论</label>
+        <textarea id="text" rows="6">这家酒店位置很好，房间干净，前台服务也很热情，下次还会再来。</textarea>
+
+        <div class="samples" id="samples"></div>
+
+        <div class="actions">
+          <button id="runLora">LoRA 判断</button>
+          <button id="runBase" class="secondary">Base 判断</button>
+          <button id="runBoth" class="secondary">两者对比</button>
+        </div>
+
+        <div class="results">
+          <article class="result">
+            <div class="result-title">LoRA 微调模型</div>
+            <div class="label-output" id="loraLabel">--</div>
+            <p id="loraRaw">等待输入</p>
+            <span id="loraTime">--</span>
+          </article>
+          <article class="result">
+            <div class="result-title">Base 原模型</div>
+            <div class="label-output" id="baseLabel">--</div>
+            <p id="baseRaw">等待输入</p>
+            <span id="baseTime">--</span>
+          </article>
+        </div>
+      </section>
+    </main>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "chnsenticorp_sentiment": {
+    "file_name": "chnsenticorp_sentiment/train.jsonl",
+    "columns": {
+      "prompt": "instruction",
+      "query": "input",
+      "response": "output"
+    }
+  }
+}

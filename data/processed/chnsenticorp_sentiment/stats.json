@@ -1,0 +1,20 @@
+{
+  "instruction": "判断下面中文评论的情感倾向，只输出“正面”或“负面”。",
+  "splits": {
+    "train": {
+      "records": 8273,
+      "positive": 4374,
+      "negative": 3899
+    },
+    "valid": {
+      "records": 1179,
+      "positive": 588,
+      "negative": 591
+    },
+    "test": {
+      "records": 1179,
+      "positive": 600,
+      "negative": 579
+    }
+  }
+}

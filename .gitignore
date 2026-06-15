@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environments
+.venv/
+.venv-wsl/
+venv/
+env/
+
+# Logs and runtime files
+logs/
+*.log
+*.pid
+
+# Local caches
+.cache/
+tmp/
+temp/
+
+# Prepared datasets are reproducible from scripts.
+data/processed/**/*.jsonl
+
+# Model artifacts are large. Publish with Git LFS, GitHub Releases, or Hugging Face.
+checkpoints/
+
+# Heavy evaluation artifacts. Keep Markdown reports in git.
+outputs/**/*.jsonl
+outputs/**/metrics.json
+outputs/chnsenticorp_eval_smoke/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
