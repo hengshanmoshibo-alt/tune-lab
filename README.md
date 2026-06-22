@@ -38,8 +38,6 @@ tune-lab/
     serve_sentiment.py
 ```
 
-> 说明：Python 包名仍保留为 `domain_tune_lab`，这是内部代码模块名；GitHub 仓库和项目展示名使用 `tune-lab`。
-
 ## 快速开始
 
 在 WSL2 Ubuntu 中执行：
